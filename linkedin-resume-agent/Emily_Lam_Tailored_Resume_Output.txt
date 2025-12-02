@@ -1,0 +1,62 @@
+EMILY LAM
+==========
+emilyjolam@gmail.com | (626) 731-1291 | Boston, MA
+LinkedIn: linkedin.com/in/emilylam
+
+PROFESSIONAL SUMMARY
+--------------------------------------------------
+Resourceful and intelligent professional with seven years of experience in investment management and financial services. Specialized in Python, R with 5+ years of experience delivering impactful solutions.
+
+CORE COMPETENCIES
+--------------------------------------------------
+Python • R
+
+PROFESSIONAL EXPERIENCE
+--------------------------------------------------
+
+Investment Operations Associate Analyst
+Poplar Forest Capital LLC | 09/2023 - Present
+  • Calculate performance metrics of various portfolios and partner with portfolio managers on customized reporting related to model portfolios
+  • Utilize SQL and various Excel Macros to facilitate client communications and streamline operations
+  • Create dashboards to research and resolve trade discrepancies across multiple accounts
+  Key Achievements:
+    ◦ Improved client communication efficiency through automated SQL queries and Excel macro development
+    ◦ Successfully resolved complex trade discrepancies through comprehensive dashboard analysis
+
+
+New Accounts Onboarding Specialist
+Kayne Anderson Rudnick | 06/2021 - 09/2023
+  • Maintained and updated client files, CRM, and portfolio data while collaborating with management to improve practices and procedures
+  Key Achievements:
+    ◦ Successfully onboarded high-net-worth clients managing complex account structures and transfer processes
+    ◦ Improved onboarding procedures through collaboration with management team
+
+
+Data Analyst
+Springboard (Online Certificate Program) | 2020 - 2021
+  • Collected business intelligence data from available public information and field reports
+  Key Achievements:
+    ◦ Developed comprehensive financial reports using Tableau that improved data-driven decision making
+    ◦ Successfully analyzed multi-platform datasets to identify actionable business insights
+
+
+EDUCATION
+--------------------------------------------------
+Bachelor of Science in Business Administration, Concentration in Finance - University of Southern California (USC) (2017)
+  Finance concentration with strong foundation in investment management and financial analysis
+
+
+CERTIFICATIONS
+--------------------------------------------------
+  • Series 7
+  • Series 63
+  • California Insurance License
+  • Wall Street Prep Accounting and Financial Statement Analysis
+  • Springboard Data Analytics Certificate
+  • Level 10 Certificate of Merit in Piano with Honors, Music Teacher's Association of California
+
+
+KEY PROJECTS
+--------------------------------------------------
+  • Automated Trade Reporting Dashboard: Developed SQL-based dashboard for tracking and resolving trade discrepancies, improving operational efficiency
+  • Client Communication Automation: Created Excel macros and SQL queries to streamline client communications and reporting processes

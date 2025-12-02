@@ -1,0 +1,80 @@
+{
+  "personal_info": {
+    "name": "Emily Lam",
+    "email": "emilyjolam@gmail.com",
+    "phone": "(626) 731-1291",
+    "location": "Boston, MA",
+    "linkedin": "linkedin.com/in/emilylam"
+  },
+  "summary": "Resourceful and intelligent professional with seven years of experience in investment management and financial services. Specialized in Python, R. with extensive experience delivering impactful solutions.",
+  "skills": [
+    "Python",
+    "R"
+  ],
+  "experience": [
+    {
+      "title": "New Accounts Onboarding Specialist",
+      "company": "Kayne Anderson Rudnick",
+      "duration": "06/2021 - 09/2023",
+      "responsibilities": [
+        "Maintained and updated client files, CRM, and portfolio data while collaborating with management to improve practices and procedures"
+      ],
+      "achievements": [
+        "Successfully onboarded high-net-worth clients managing complex account structures and transfer processes",
+        "Improved onboarding procedures through collaboration with management team"
+      ]
+    },
+    {
+      "title": "Data Analyst",
+      "company": "Springboard (Online Certificate Program)",
+      "duration": "2020 - 2021",
+      "responsibilities": [
+        "Collected business intelligence data from available public information and field reports"
+      ],
+      "achievements": [
+        "Developed comprehensive financial reports using Tableau that improved data-driven decision making",
+        "Successfully analyzed multi-platform datasets to identify actionable business insights"
+      ]
+    },
+    {
+      "title": "Investment Operations Associate Analyst",
+      "company": "Poplar Forest Capital LLC",
+      "duration": "09/2023 - Present",
+      "responsibilities": [
+        "Calculate performance metrics of various portfolios and partner with portfolio managers on customized reporting related to model portfolios",
+        "Utilize SQL and various Excel Macros to facilitate client communications and streamline operations",
+        "Create dashboards to research and resolve trade discrepancies across multiple accounts"
+      ],
+      "achievements": [
+        "Improved client communication efficiency through automated SQL queries and Excel macro development",
+        "Successfully resolved complex trade discrepancies through comprehensive dashboard analysis"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science in Business Administration, Concentration in Finance",
+      "institution": "University of Southern California (USC)",
+      "year": "2017",
+      "details": "Finance concentration with strong foundation in investment management and financial analysis"
+    }
+  ],
+  "certifications": [
+    "Series 7",
+    "Series 63",
+    "California Insurance License",
+    "Wall Street Prep Accounting and Financial Statement Analysis",
+    "Springboard Data Analytics Certificate",
+    "Level 10 Certificate of Merit in Piano with Honors, Music Teacher's Association of California"
+  ],
+  "projects": [
+    {
+      "name": "Automated Trade Reporting Dashboard",
+      "description": "Developed SQL-based dashboard for tracking and resolving trade discrepancies, improving operational efficiency"
+    },
+    {
+      "name": "Client Communication Automation",
+      "description": "Created Excel macros and SQL queries to streamline client communications and reporting processes"
+    }
+  ]
+}

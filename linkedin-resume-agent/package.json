@@ -1,0 +1,17 @@
+{
+  "name": "linkedin-resume-agent",
+  "version": "1.0.0",
+  "description": "LinkedIn Resume Agent",
+  "main": "linkedinResumeAgent.js",
+  "scripts": {
+    "start": "node linkedinResumeAgent.js",
+    "dev": "node linkedinResumeAgent.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "docx": "^9.5.1"
+  }
+}

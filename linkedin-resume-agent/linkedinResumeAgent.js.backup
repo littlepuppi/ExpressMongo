@@ -1,0 +1,373 @@
+const fs = require('fs');
+
+class Experience {
+    constructor(title, company, duartion, responsibilities, achievements) {
+        this.title = title;
+        this.company = company;
+        this.duartion = duartion;
+        this.responsibilities = responsibilities;
+        this.achievements = achievements;
+    }
+}
+
+class Education {
+    constructor(degree, institution, year, details = null) {
+        this.degree = degree;
+        this.institution = institution;
+        this.year = year;
+        this.details = details;
+    }
+}
+
+class UserProfile {
+    constructor(name, email, phone, location, linkedin, summary, experiences, education, skills, certifications, projects) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.location = location;
+        this.linkedin = linkedin;
+        this.summary = summary;
+        this.experiences = experiences; // Array of Experience objects
+        this.education = education; // Array of Education objects
+        this.skills = skills; // Array of strings
+        this.certifications = certifications; // Array of strings
+        this.projects = projects; // Array of strings
+    }
+}
+
+class LinkedInResumeAgent {
+    constructor(userProfile) {
+        this.profile = userProfile;
+    }
+
+extractKeywords(jobDescription) {
+        const jdLower = jobDescription.toLowerCase();
+
+        const technicalSkills = [];
+        const softSkills = [];
+
+        // Technical skills keywords
+        const techKeywords = [
+            'python', 'java', 'javascript', 'react', 'node.js', 'sql', 'aws', 'docker', 'kubernetes','machine learning', 'ai', 'data analysis', 'tensorflow', 'pytorch', 'git', 'agile', 'scrum', 'rest api', 'microservices', 'cloud', 'azure', 'gcp', 'ci/cd', 'devops', 'tableau', 'power bi', 'excel', 'bloomberg', 'portfolio management', 'financial analysis', 'investment', 'etl', 'capiq', 'crm']; 
+        
+        const softKeywords = [
+            'leadership', 'communication', 'teamwork', 'problem solving','analytical', 'creative', 'collaborative', 'strategic thinking', 'project management', 'mentoring', 'cross-functional', 'client relationship'];
+
+        techKeywords.forEach(skill => {
+            if (jdLower.includes(skill)) {
+                technicalSkills.push(skill);
+            }
+        });
+
+        softKeywords.forEach(skill => {
+            if (jdLower.includes(skill)) {
+                softSkills.push(skill);
+            }
+        });
+    
+//Extract years of experience required
+const experienceMatch = jdLower.match(/(\d+)\+?\s*years?/);
+const yearsRequired = experienceMatch ? experienceMatch [1] : null;
+
+//Extract education requirements
+const educationKeywords = ['bachelor', 'master', 'phd', 'degree', 'bs', 'ms', 'mba'];
+const educationRequired = educationKeywords.some(keyword => jdLower.includes(keyword));
+
+return {
+    technicalSkills,
+    softSkills,
+    yearsRequired,
+    educationRequired,
+    fullTest: jobDescription
+};
+}
+
+matchSkills(requiredSkills) {
+    const userSkillsLower = this.profile.skills.map(skill => skill.toLowerCase());
+    const matched = [];
+    
+    requiredSkills.forEach(reqSkill => {
+      this.profile.skills.forEach(userSkill => {
+        if (reqSkill.toLowerCase().includes(userSkill.toLowerCase()) || 
+            userSkill.toLowerCase().includes(reqSkill.toLowerCase())) {
+          if (!matched.includes(userSkill)) {
+            matched.push(userSkill);
+          }
+        }
+      });
+    });
+    
+    return matched;
+  }
+
+  tailorSummary(jobKeywords) {
+    const matchedTech = this.matchSkills(jobKeywords.technicalSkills);
+    const summaryParts = [this.profile.summary.split('.')[0]];
+    
+    if (matchedTech.length > 0) {
+      const skillsStr = matchedTech.slice(0, 5).join(', ');
+      summaryParts.push(`Specialized in ${skillsStr}`);
+    }
+    
+    if (jobKeywords.yearsRequired) {
+      summaryParts.push('with extensive experience delivering impactful solutions');
+    }
+    
+    return summaryParts.join('. ') + '.';
+  }
+
+  tailorExperience(jobKeywords) {
+    const tailored = [];
+    const requiredSkillsLower = [
+      ...jobKeywords.technicalSkills,
+      ...jobKeywords.softSkills
+    ].map(s => s.toLowerCase());
+    
+    this.profile.experiences.forEach(exp => {
+      let score = 0;
+      const relevantResponsibilities = [];
+      const relevantAchievements = [];
+      
+      exp.responsibilities.forEach(resp => {
+        const respLower = resp.toLowerCase();
+        if (requiredSkillsLower.some(skill => respLower.includes(skill))) {
+          relevantResponsibilities.push(resp);
+          score += 2;
+        }
+      });
+      
+      exp.achievements.forEach(ach => {
+        const achLower = ach.toLowerCase();
+        if (requiredSkillsLower.some(skill => achLower.includes(skill))) {
+          relevantAchievements.push(ach);
+          score += 3;
+        }
+      });
+      
+      if (score > 0 || tailored.length < 3) {
+        const tailoredExp = new Experience(
+          exp.title,
+          exp.company,
+          exp.duration,
+          relevantResponsibilities.length > 0 ? relevantResponsibilities.slice(0, 4) : exp.responsibilities.slice(0, 3),
+          relevantAchievements.length > 0 ? relevantAchievements.slice(0, 2) : exp.achievements.slice(0, 2)
+        );
+        tailored.push({ score, exp: tailoredExp });
+      }
+    });
+    
+    // Sort by relevance score
+    tailored.sort((a, b) => b.score - a.score);
+    return tailored.slice(0, 4).map(item => item.exp);
+  }
+
+  generateResumeText(jobDescription) {
+    const keywords = this.extractKeywords(jobDescription);
+    const tailoredSummary = this.tailorSummary(keywords);
+    const tailoredExperiences = this.tailorExperience(keywords);
+    const matchedSkills = this.matchSkills([...keywords.technicalSkills, ...keywords.softSkills]);
+    
+    const resume = [];
+    resume.push(this.profile.name.toUpperCase());
+    resume.push('='.repeat(this.profile.name.length));
+    resume.push(`${this.profile.email} | ${this.profile.phone} | ${this.profile.location}`);
+    resume.push(`LinkedIn: ${this.profile.linkedin}\n`);
+    
+    resume.push('PROFESSIONAL SUMMARY');
+    resume.push('-'.repeat(50));
+    resume.push(`${tailoredSummary}\n`);
+    
+    resume.push('CORE COMPETENCIES');
+    resume.push('-'.repeat(50));
+    const prioritySkills = matchedSkills.length > 0 ? matchedSkills.slice(0, 8) : this.profile.skills.slice(0, 8);
+    const otherSkills = this.profile.skills.filter(s => !prioritySkills.includes(s)).slice(0, 4);
+    const allDisplaySkills = [...prioritySkills, ...otherSkills];
+    resume.push(allDisplaySkills.join(' • ') + '\n');
+    
+    resume.push('PROFESSIONAL EXPERIENCE');
+    resume.push('-'.repeat(50));
+    tailoredExperiences.forEach(exp => {
+      resume.push(`\n${exp.title}`);
+      resume.push(`${exp.company} | ${exp.duration}`);
+      
+      if (exp.responsibilities.length > 0) {
+        exp.responsibilities.forEach(resp => {
+          resume.push(`  • ${resp}`);
+        });
+      }
+      
+      if (exp.achievements.length > 0) {
+        resume.push('  Key Achievements:');
+        exp.achievements.forEach(ach => {
+          resume.push(`    ◦ ${ach}`);
+        });
+      }
+    });
+    
+    resume.push('\n\nEDUCATION');
+    resume.push('-'.repeat(50));
+    this.profile.education.forEach(edu => {
+      resume.push(`${edu.degree} - ${edu.institution} (${edu.year})`);
+      if (edu.details) {
+        resume.push(`  ${edu.details}`);
+      }
+    });
+    
+    if (this.profile.certifications.length > 0) {
+      resume.push('\n\nCERTIFICATIONS');
+      resume.push('-'.repeat(50));
+      this.profile.certifications.forEach(cert => {
+        resume.push(`  • ${cert}`);
+      });
+    }
+    
+    if (this.profile.projects.length > 0) {
+      resume.push('\n\nKEY PROJECTS');
+      resume.push('-'.repeat(50));
+      this.profile.projects.slice(0, 2).forEach(project => {
+        resume.push(`  • ${project.name}: ${project.description}`);
+      });
+    }
+    
+    return resume.join('\n');
+  }
+
+  generateResumeJSON(jobDescription) {
+    const keywords = this.extractKeywords(jobDescription);
+    const tailoredSummary = this.tailorSummary(keywords);
+    const tailoredExperiences = this.tailorExperience(keywords);
+    const matchedSkills = this.matchSkills([...keywords.technicalSkills, ...keywords.softSkills]);
+    
+    return {
+      personal_info: {
+        name: this.profile.name,
+        email: this.profile.email,
+        phone: this.profile.phone,
+        location: this.profile.location,
+        linkedin: this.profile.linkedin
+      },
+      summary: tailoredSummary,
+      skills: matchedSkills.length > 0 ? matchedSkills.slice(0, 12) : this.profile.skills.slice(0, 12),
+      experience: tailoredExperiences.map(exp => ({
+        title: exp.title,
+        company: exp.company,
+        duration: exp.duration,
+        responsibilities: exp.responsibilities,
+        achievements: exp.achievements
+      })),
+      education: this.profile.education.map(edu => ({
+        degree: edu.degree,
+        institution: edu.institution,
+        year: edu.year,
+        details: edu.details
+      })),
+      certifications: this.profile.certifications,
+      projects: this.profile.projects.slice(0, 2)
+    };
+  }
+}
+
+// Example Usage
+if (require.main === module) {
+  // Sample user profile
+  const sampleProfile = new UserProfile(
+    "Jane Smith",
+    "jane.smith@email.com",
+    "(555) 123-4567",
+    "San Francisco, CA",
+    "linkedin.com/in/janesmith",
+    "Results-driven Software Engineer with 6+ years of experience building scalable applications. Passionate about solving complex problems with innovative solutions",
+    [
+      new Experience(
+        "Senior Software Engineer",
+        "Tech Corp",
+        "2021 - Present",
+        [
+          "Developed microservices architecture using Python and Docker, improving system scalability by 40%",
+          "Led team of 5 engineers in implementing CI/CD pipelines with Jenkins and AWS",
+          "Designed and built REST APIs serving 1M+ daily requests",
+          "Collaborated with product managers to define technical requirements"
+        ],
+        [
+          "Reduced deployment time by 60% through automation",
+          "Mentored 3 junior developers, 2 promoted within 1 year"
+        ]
+      ),
+      new Experience(
+        "Software Engineer",
+        "StartUp Inc",
+        "2019 - 2021",
+        [
+          "Built full-stack web applications using React and Node.js",
+          "Implemented machine learning models for customer segmentation",
+          "Optimized database queries reducing load time by 50%",
+          "Participated in Agile sprints and code reviews"
+        ],
+        [
+          "Launched feature that increased user engagement by 35%",
+          "Won company hackathon for innovative AI solution"
+        ]
+      )
+    ],
+    [
+      new Education(
+        "Bachelor of Science in Computer Science",
+        "University of California",
+        "2019",
+        "GPA: 3.8/4.0, Dean's List"
+      )
+    ],
+    ["Python", "Java", "JavaScript", "React", "Node.js", "AWS", "Docker", 
+     "Kubernetes", "SQL", "MongoDB", "Machine Learning", "REST APIs", 
+     "Git", "Agile", "Problem Solving", "Leadership"],
+    ["AWS Certified Solutions Architect", "Certified Scrum Master"],
+    [
+      {
+        name: "E-commerce Platform",
+        description: "Built scalable e-commerce platform handling 10K concurrent users using microservices"
+      },
+      {
+        name: "AI Chatbot",
+        description: "Developed NLP-powered customer service chatbot reducing support tickets by 30%"
+      }
+    ]
+  );
+  
+  // Sample job description
+  const jobDescription = `
+    Senior Software Engineer
+    
+    We're seeking a talented Senior Software Engineer with 5+ years of experience to join our team.
+    
+    Requirements:
+    - 5+ years of experience in software development
+    - Strong proficiency in Python and JavaScript
+    - Experience with AWS cloud services and Docker
+    - Knowledge of microservices architecture
+    - Experience with CI/CD pipelines
+    - Strong problem-solving and leadership skills
+    - Bachelor's degree in Computer Science or related field
+    
+    Responsibilities:
+    - Design and implement scalable backend services
+    - Lead technical projects and mentor junior engineers
+    - Collaborate with cross-functional teams
+    - Optimize application performance
+  `;
+  
+  // Create agent and generate tailored resume
+  const agent = new LinkedInResumeAgent(sampleProfile);
+  
+  console.log("TAILORED RESUME");
+  console.log("=".repeat(70));
+  const tailoredResume = agent.generateResumeText(jobDescription);
+  console.log(tailoredResume);
+  
+  console.log("\n\n" + "=".repeat(70));
+  console.log("JSON FORMAT (for ATS systems)");
+  console.log("=".repeat(70));
+  const jsonResume = agent.generateResumeJSON(jobDescription);
+  console.log(JSON.stringify(jsonResume, null, 2));
+}
+
+module.exports = { LinkedInResumeAgent, UserProfile, Experience, Education };
