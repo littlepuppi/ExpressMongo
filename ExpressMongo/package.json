@@ -1,0 +1,28 @@
+{
+  "name": "products-reviews-api",
+  "version": "1.0.0",
+  "description": "REST API for products and reviews with MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:refs": "node server-with-refs.js",
+    "dev": "nodemon server.js",
+    "dev:refs": "nodemon server-with-refs.js"
+  },
+  "keywords": [
+    "express",
+    "mongodb",
+    "rest-api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.13.5",
+    "cors": "^2.8.6",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
